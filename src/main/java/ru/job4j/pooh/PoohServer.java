@@ -20,37 +20,32 @@ public class PoohServer {
     private void runServer() {
         ExecutorService pool = Executors.newCachedThreadPool();
         try (ServerSocket server = new ServerSocket(9000)) {
-            System.out.println("Pooh is ready ...");
             while (!server.isClosed()) {
                 Socket socket = server.accept();
                 pool.execute(() -> {
                     try (OutputStream out = socket.getOutputStream();
-                         var input = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+                        var input = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
                         while (true) {
                             var details = input.readLine().split(";");
                             if (details.length != 3) {
                                 continue;
                             }
-                            var action = details[0];
-                            var name = details[1];
-                            var text = details[2];
-                            if (action.equals("intro")) {
-                                if (name.equals("queue")) {
+                            if (details[0].equals("intro")) {
+                                if (details[1].equals("queue")) {
                                     queueSchema.addReceiver(
-                                            new SocketReceiver(text, new PrintWriter(out))
+                                            new SocketReceiver(details[2], new PrintWriter(out))
                                     );
-                                }
-                                if (name.equals("topic")) {
+                                } else if (details[1].equals("topic")) {
                                     topicSchema.addReceiver(
-                                            new SocketReceiver(text, new PrintWriter(out))
+                                            new SocketReceiver(details[2], new PrintWriter(out))
                                     );
                                 }
                             }
-                            if (action.equals("queue")) {
-                                queueSchema.publish(new Message(name, text));
+                            if (details[0].equals("queue")) {
+                                queueSchema.publish(new Message(details[1], details[2]));
                             }
-                            if (action.equals("topic")) {
-                                topicSchema.publish(new Message(name, text));
+                            if (details[0].equals("topic")) {
+                                topicSchema.publish(new Message(details[1], details[2]));
                             }
                         }
                     } catch (Exception e) {
