@@ -19,7 +19,7 @@ public class MultiplicationTest {
         exerciseTimer.setStatus(true);
         while (exerciseTimer.getStatus()) {
             example.getAnswer();
-            if (example.checkAnswer()) {
+            if (example.checkAnswer() && exerciseTimer.getStatus()) {
                 exerciseTimer.setStatus(false);
                 return true;
             } else if (exerciseTimer.getStatus()) {
