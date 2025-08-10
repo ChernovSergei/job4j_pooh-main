@@ -4,11 +4,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ExerciseTimer implements Runnable {
     volatile long timerPreSet;
-    AtomicBoolean timerStatus = new AtomicBoolean(true);
-    boolean timerSwitcher = false;
-    long timeStart = 0;
-    long timeCurrent;
-    long period;
+    volatile AtomicBoolean timerStatus = new AtomicBoolean(true);
+    volatile boolean timerSwitcher = false;
+    volatile long timeStart = 0;
+    volatile long timeCurrent;
+    volatile long period;
 
     public ExerciseTimer(long setPointInSeconds) {
         this.timerPreSet = setPointInSeconds * 1000;
