@@ -15,10 +15,8 @@ public class MultiplicationGenerator {
         return multiplicand + " * " + multiplier + " = ";
     }
 
-    public void getAnswer() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your answer");
-        answer = scanner.nextInt();
+    public void setAnswer(int answer) {
+        this.answer = answer;
     }
 
     public boolean checkAnswer() {

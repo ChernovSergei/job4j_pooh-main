@@ -3,18 +3,18 @@ package ru.job4j.mult;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Alarm implements Runnable {
-    private volatile AtomicBoolean switcher = new AtomicBoolean(false);
+    private volatile AtomicBoolean status = new AtomicBoolean(false);
 
-    public void switchAlarm(Boolean onOff) {
+    public void switchAlarm(Boolean status) {
         boolean monitor = false;
         while (!monitor) {
             boolean currentStatus = getStatus();
-            monitor = switcher.compareAndSet(currentStatus, onOff);
+            monitor = this.status.compareAndSet(currentStatus, status);
         }
     }
 
     public Boolean getStatus() {
-        return switcher.get();
+        return status.get();
     }
 
     @Override
